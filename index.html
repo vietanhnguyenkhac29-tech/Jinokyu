@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jinokyu - Nhắn tin không rào cản</title>
+    <meta
+      name="description"
+      content="Jinokyu - Nền tảng nhắn tin bảo mật, nhanh chóng và hiện đại với khả năng lưu trữ không giới hạn."
+    />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo">
+          <button id="menu-toggle" class="menu-toggle" title="Menu">
+            <img src="assets/icons/menu.svg" alt="Menu" />
+          </button>
+          <img src="assets/logo-jinokyu.svg" alt="Jinokyu" class="logo-img" />
+          <span class="logo-text">Jinokyu</span>
+        </div>
+        <div class="navbar">
+          <a href="#" class="nav-link" data-i18n="nav-home">Trang chủ</a>
+          <a href="#" class="nav-link" data-i18n="nav-about">Giới thiệu</a>
+          <a href="#" class="nav-link" data-i18n="nav-contact">Liên hệ</a>
+          <a href="#" class="nav-link" data-i18n="nav-download">Tải ứng dụng</a>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <div class="sidebar">
+          <!-- Mini-bar icons -->
+          <div class="menu-icons">
+            <a title="Khám phá" class="icon-btn"
+              ><img src="assets/icons/search.svg" alt="🔍"
+            /></a>
+            <a title="Tin nhắn" class="icon-btn active"
+              ><img src="assets/icons/files.svg" alt="💬"
+            /></a>
+            <a title="Bạn bè" class="icon-btn"
+              ><img src="assets/icons/person_add.svg" alt="👤"
+            /></a>
+            <a title="Thông báo" class="icon-btn"
+              ><img src="assets/icons/notifications.svg" alt="🔔"
+            /></a>
+            <a title="Tệp tin" class="icon-btn"
+              ><img src="assets/icons/file_copy.svg" alt="📁"
+            /></a>
+            <div style="flex: 1"></div>
+            <a title="Cài đặt" class="icon-btn"
+              ><img src="assets/icons/settings.svg" alt="⚙️"
+            /></a>
+          </div>
+
+          <!-- Channel Area -->
+          <div class="channel-area">
+            <div class="channel-header">
+              <h3 data-i18n="sidebar-channels">Kênh chat</h3>
+            </div>
+            <ul class="channel-list">
+              <li class="active" id="chan-chung"># chung</li>
+              <li id="chan-thongbao"># thông-báo</li>
+              <li id="chan-chemgio"># chém-gió</li>
+              <li id="chan-hotro"># hỗ-trợ</li>
+              <li id="chan-memes"># memes</li>
+              <li id="chan-game"># game</li>
+              <li id="chan-code"># code</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="chat-area">
+          <div class="chat-header">
+            <div class="chat-header-left">
+              <span class="hashtag">#</span>
+              <h2 id="current-channel-name">chung</h2>
+            </div>
+            <div class="chat-header-actions">
+              <button
+                id="export-btn"
+                class="header-action-btn"
+                title="Xuất dữ liệu (Export)"
+              >
+                <img src="assets/icons/file_export.svg" alt="Export" />
+              </button>
+              <button
+                id="import-btn"
+                class="header-action-btn"
+                title="Nhập dữ liệu (Import)"
+              >
+                <img src="assets/icons/login.svg" alt="Import" />
+              </button>
+              <input
+                type="file"
+                id="import-file-input"
+                accept="application/json"
+                style="display: none"
+              />
+              <button
+                id="delete-all-btn"
+                class="delete-all-btn"
+                title="Xóa sạch lịch sử"
+              >
+                <img src="assets/icons/delete_forever.svg" alt="Delete" />
+              </button>
+            </div>
+          </div>
+
+          <div class="messages" id="messages-container">
+            <!-- Messages will be rendered here -->
+          </div>
+
+          <div id="file-preview-container">
+            <div id="file-preview"></div>
+          </div>
+
+          <div class="input-area">
+            <div class="input-wrapper">
+              <label for="file-input" class="attach-btn" title="Đính kèm">
+                <img src="assets/icons/attach_file.svg" alt="📎" />
+              </label>
+              <input
+                type="file"
+                id="file-input"
+                accept="image/*,video/*"
+                multiple
+                style="display: none"
+              />
+              <input
+                type="text"
+                id="message-input"
+                placeholder="Gửi tin nhắn đến # chung"
+                autocomplete="off"
+              />
+              <div class="input-actions">
+                <button class="emoji-btn" title="Emoji">😀</button>
+                <button id="send-btn" class="send-btn">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="settings-modal">
+      <div class="settings-container">
+        <!-- Sidebar -->
+        <div class="settings-sidebar">
+          <h4 data-i18n="set-user-head">Cài đặt người dùng</h4>
+          <div
+            class="settings-tab active"
+            data-target="tab-user"
+            data-i18n="set-tab-user"
+          >
+            Người dùng
+          </div>
+
+          <h4 data-i18n="set-app-head">Cài đặt ứng dụng</h4>
+          <div
+            class="settings-tab"
+            data-target="tab-theme"
+            data-i18n="set-tab-theme"
+          >
+            Giao diện
+          </div>
+          <div
+            class="settings-tab"
+            data-target="tab-advanced"
+            data-i18n="set-tab-advanced"
+          >
+            Nâng cao (GPU)
+          </div>
+          <div
+            class="settings-tab"
+            data-target="tab-language"
+            data-i18n="set-tab-lang"
+          >
+            Ngôn ngữ & Thời gian
+          </div>
+
+          <div class="settings-divider"></div>
+
+          <div
+            class="settings-tab"
+            data-target="tab-security"
+            data-i18n="set-tab-security"
+          >
+            Dữ liệu & Bảo mật
+          </div>
+          <div
+            class="settings-tab logout"
+            id="logout-btn"
+            data-i18n="set-tab-logout"
+          >
+            Đăng xuất
+          </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="settings-content">
+          <div id="settings-close" class="settings-close">
+            <svg width="18" height="18" viewBox="0 0 18 18">
+              <path
+                fill="currentColor"
+                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+              ></path>
+            </svg>
+            <span>ESC</span>
+          </div>
+
+          <!-- Tab User -->
+          <div id="tab-user" class="settings-section active">
+            <h1 class="settings-title" data-i18n="set-user-title">
+              Người dùng
+            </h1>
+            <div class="settings-item">
+              <div class="settings-item-header">
+                <div>
+                  <div
+                    class="settings-item-label"
+                    data-i18n="set-user-item-label"
+                  >
+                    Hồ sơ cá nhân
+                  </div>
+                  <div
+                    class="settings-item-desc"
+                    data-i18n="set-user-item-desc"
+                  >
+                    Thay đổi tên hiển thị và ảnh đại diện của bạn.
+                  </div>
+                </div>
+                <button class="action-btn" data-i18n="set-btn-edit">
+                  Chỉnh sửa
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Theme -->
+          <div id="tab-theme" class="settings-section">
+            <h1 class="settings-title" data-i18n="set-theme-title">
+              Chủ đề giao diện
+            </h1>
+            <div class="theme-switch-container">
+              <div class="theme-segment" data-theme="light">
+                <img
+                  src="assets/icons/brightness.svg"
+                  alt="Sáng"
+                  class="theme-icon"
+                />
+                <span data-i18n="set-theme-light">Sáng</span>
+              </div>
+              <div class="theme-segment active" data-theme="dark">
+                <img
+                  src="assets/icons/dark_mode.svg"
+                  alt="Tối"
+                  class="theme-icon"
+                />
+                <span data-i18n="set-theme-dark">Tối</span>
+              </div>
+              <div class="theme-segment" data-theme="amoled">
+                <img
+                  src="assets/icons/contrast.svg"
+                  alt="AMOLED"
+                  class="theme-icon"
+                />
+                <span data-i18n="set-theme-amoled">AMOLED</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Advanced -->
+          <div id="tab-advanced" class="settings-section">
+            <h1 class="settings-title" data-i18n="set-advanced-title">
+              Nâng cao
+            </h1>
+            <div class="settings-item">
+              <div class="settings-item-header">
+                <div>
+                  <div
+                    class="settings-item-label"
+                    data-i18n="set-advanced-gpu-label"
+                  >
+                    Tăng tốc phần cứng (GPU)
+                  </div>
+                  <div
+                    class="settings-item-desc"
+                    data-i18n="set-advanced-gpu-desc"
+                  >
+                    Sử dụng sức mạnh GPU để làm các hiệu ứng chuyển động mượt mà
+                    hơn.
+                  </div>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="gpu-toggle" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Language -->
+          <div id="tab-language" class="settings-section">
+            <h1 class="settings-title" data-i18n="set-lang-title">
+              Ngôn ngữ & Thời gian
+            </h1>
+            <div class="settings-item">
+              <div class="settings-item-header">
+                <div class="settings-item-label" data-i18n="set-lang-label">
+                  Ngôn ngữ
+                </div>
+                <select id="language-select" class="settings-select">
+                  <option selected>Tiếng Việt</option>
+                  <option>English</option>
+                  <option>Japanese</option>
+                  <option>French</option>
+                  <option>German</option>
+                  <option>Spanish</option>
+                  <option>Italian</option>
+                  <option>Portuguese</option>
+                  <option>Russian</option>
+                  <option>Arabic</option>
+                  <option>Chinese</option>
+                  <option>Korean</option>
+                  <option>Thai</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Security -->
+          <div id="tab-security" class="settings-section">
+            <h1 class="settings-title" data-i18n="set-security-title">
+              Dữ liệu & Bảo mật
+            </h1>
+            <div class="settings-item">
+              <div class="settings-item-header">
+                <div>
+                  <div
+                    class="settings-item-label"
+                    data-i18n="set-security-encrypt-label"
+                  >
+                    Mã hóa tin nhắn
+                  </div>
+                  <div
+                    class="settings-item-desc"
+                    data-i18n="set-security-encrypt-desc"
+                  >
+                    Tin nhắn của bạn được bảo mật thông qua IndexedDB local.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
